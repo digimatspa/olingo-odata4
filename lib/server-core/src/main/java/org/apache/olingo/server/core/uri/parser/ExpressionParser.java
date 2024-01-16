@@ -620,7 +620,8 @@ public class ExpressionParser {
       ParserHelper.bws(tokenizer);
       final Expression geoPointParameter = parseExpression();
       checkType(geoPointParameter,
-          EdmPrimitiveTypeKind.GeographyPoint, EdmPrimitiveTypeKind.GeometryPoint);
+          EdmPrimitiveTypeKind.GeographyPoint, EdmPrimitiveTypeKind.GeometryPoint,
+          EdmPrimitiveTypeKind.GeographyPolygon, EdmPrimitiveTypeKind.GeometryPolygon);
       checkNoCollection(geoPointParameter);
       parameters.add(geoPointParameter);
       ParserHelper.bws(tokenizer);
