@@ -187,7 +187,7 @@ public abstract class AbstractGeospatialType<T extends Geospatial> extends Singl
     }
     final List<Point> exterior = new ArrayList<Point>();
     for (final String pointCoo : split(first[first.length -1].substring(1, first[first.length -1].length() - 1), ',')) {
-      exterior.add(newPoint(null, pointCoo, isNullable, maxLength, precision, scale, isUnicode));
+      exterior.add(newPoint(srid, pointCoo, isNullable, maxLength, precision, scale, isUnicode));
     }
 
     return new Polygon(dimension, srid, interiorRings, new LineString(dimension, srid, exterior));
