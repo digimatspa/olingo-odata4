@@ -89,7 +89,7 @@ public abstract class AbstractGeospatialType<T extends Geospatial> extends Singl
       final Integer maxLength, final Integer precision, final Integer scale, final Boolean isUnicode)
           throws EdmPrimitiveTypeException {
 
-    final List<String> pointCoo = split(point, ' ');
+    final List<String> pointCoo = split(point.trim(), ' ');
     if (pointCoo == null || pointCoo.size() != 2) {
       throw new EdmPrimitiveTypeException("The literal '" + point + "' has illegal content.");
     }
@@ -186,7 +186,8 @@ public abstract class AbstractGeospatialType<T extends Geospatial> extends Singl
 	    interiorRings.add(new LineString(dimension, srid, interior));
     }
     final List<Point> exterior = new ArrayList<Point>();
-    for (final String pointCoo : split(first[first.length -1].substring(1, first[first.length -1].length() - 1), ',')) {
+    for (final String pointCoo : split(first[first.length -1].substring(first[first.length -1].startsWith("(") ? 1 :0,
+            first[first.length -1].length() - 1), ',')) {
       exterior.add(newPoint(srid, pointCoo, isNullable, maxLength, precision, scale, isUnicode));
     }
 

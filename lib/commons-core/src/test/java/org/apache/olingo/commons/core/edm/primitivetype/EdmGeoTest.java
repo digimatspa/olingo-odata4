@@ -130,6 +130,36 @@ public class EdmGeoTest extends PrimitiveTypeBaseTest {
 
     assertEquals(input, EdmGeographyPolygon.getInstance().valueToString(polygon, null, null, null, null, null));
   }
+
+  @Test
+  public void simplePolygon() throws EdmPrimitiveTypeException {
+    final String input = "geography'SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.15398, " +
+            "-75.704722 36.076944, -87.906471 43.038902))'";
+
+    expectContentErrorInValueOfString(EdmGeometryPolygon.getInstance(), input);
+
+    final Polygon polygon = EdmGeographyPolygon.getInstance().
+            valueOfString(input, null, null, null, null, null, Polygon.class);
+    assertNotNull(polygon);
+    assertEquals("4326", polygon.getSrid().toString());
+    assertEquals(0, polygon.getNumberOfInteriorRings());
+    Iterator<Point> itor  = polygon.getExterior().iterator();
+    Point point = itor.next();
+    assertEquals(-87.906471, point.getX(), 0);
+    assertEquals(43.038902, point.getY(), 0);
+    assertEquals("4326", point.getSrid().toString());
+    point = itor.next();
+    assertEquals(-95.992775, point.getX(), 0);
+    assertEquals(36.15398, point.getY(), 0);
+    assertEquals("4326", point.getSrid().toString());
+    point = itor.next();
+    assertEquals(-75.704722, point.getX(), 0);
+    assertEquals(36.076944, point.getY(), 0);
+    assertEquals("4326", point.getSrid().toString());
+
+    assertEquals(input.replace(", ", ",").replace("POLYGON", "Polygon"),
+            EdmGeographyPolygon.getInstance().valueToString(polygon, null, null, null, null, null));
+  }
   
   @Test
   public void polygonMultipleHoles() throws EdmPrimitiveTypeException {
