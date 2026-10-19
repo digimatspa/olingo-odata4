@@ -18,19 +18,6 @@
  */
 package org.apache.olingo.fit.tecsvc.client;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Iterator;
-
 import org.apache.olingo.client.api.ODataClient;
 import org.apache.olingo.client.api.communication.ODataClientErrorException;
 import org.apache.olingo.client.api.communication.request.batch.BatchManager;
@@ -44,11 +31,7 @@ import org.apache.olingo.client.api.communication.request.retrieve.ODataEntityRe
 import org.apache.olingo.client.api.communication.request.retrieve.ODataEntitySetRequest;
 import org.apache.olingo.client.api.communication.request.retrieve.ODataPropertyRequest;
 import org.apache.olingo.client.api.communication.request.streamed.ODataMediaEntityCreateRequest;
-import org.apache.olingo.client.api.communication.response.ODataBatchResponse;
-import org.apache.olingo.client.api.communication.response.ODataEntityCreateResponse;
-import org.apache.olingo.client.api.communication.response.ODataEntityUpdateResponse;
-import org.apache.olingo.client.api.communication.response.ODataResponse;
-import org.apache.olingo.client.api.communication.response.ODataRetrieveResponse;
+import org.apache.olingo.client.api.communication.response.*;
 import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientEntitySet;
 import org.apache.olingo.client.api.domain.ClientObjectFactory;
@@ -61,6 +44,14 @@ import org.apache.olingo.commons.api.http.HttpHeader;
 import org.apache.olingo.commons.api.http.HttpStatusCode;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Iterator;
+
+import static org.junit.Assert.*;
 
 public class BatchClientITCase extends AbstractParamTecSvcITCase {
 

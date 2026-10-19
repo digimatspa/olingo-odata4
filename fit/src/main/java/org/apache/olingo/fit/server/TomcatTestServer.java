@@ -18,32 +18,9 @@
  ******************************************************************************/
 package org.apache.olingo.fit.server;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.SimpleFormatter;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.HttpSessionEvent;
-import jakarta.servlet.http.HttpSessionListener;
-
+import jakarta.servlet.http.*;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
@@ -53,9 +30,19 @@ import org.apache.catalina.loader.WebappLoader;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.tomcat.util.http.LegacyCookieProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Server for integration tests.
@@ -336,10 +323,52 @@ public class TomcatTestServer {
     private Context getContext() {
       if (baseContext == null) {
         baseContext = tomcat.addContext("", baseDir.getAbsolutePath());
-        baseContext.setCookieProcessor(new LegacyCookieProcessor());
+
+        // Crea un processore di Cookie personalizzato No-Op ultra-tollerante
+        baseContext.setCookieProcessor(new org.apache.tomcat.util.http.CookieProcessor() {
+          @Override
+          public void parseCookieHeader(org.apache.tomcat.util.http.MimeHeaders headers,
+                                        org.apache.tomcat.util.http.ServerCookies serverCookies) {
+            // Recupera l'intestazione grezza del Cookie
+            org.apache.tomcat.util.buf.MessageBytes cookieValue = headers.getValue("cookie");
+            if (cookieValue != null && !cookieValue.isNull()) {
+              String rawCookie = cookieValue.toString();
+
+              // Pulisce e isola il token JSESSIONID ignorando la sintassi errata di Olingo
+              if (rawCookie.contains("JSESSIONID=")) {
+                String id = rawCookie.split(
+                        "JSESSIONID=")[1].split(";")[0]
+                        .replace("]", "")
+                        .trim();
+
+                // Registra manualmente il cookie pulito nel server di test
+                org.apache.tomcat.util.http.ServerCookie sc = serverCookies.addCookie();
+                sc.getName().setString("JSESSIONID");
+                sc.getValue().setString(id);
+              }
+            }
+          }
+
+
+          public String generateHeader(jakarta.servlet.http.Cookie cookie) {
+            return cookie.getName() + "=" + cookie.getValue();
+          }
+
+          @Override
+          public String generateHeader(jakarta.servlet.http.Cookie cookie,
+                                       jakarta.servlet.http.HttpServletRequest request) {
+            return generateHeader(cookie);
+          }
+
+          @Override
+          public java.nio.charset.Charset getCharset() {
+            return java.nio.charset.StandardCharsets.UTF_8;
+          }
+        });
       }
       return baseContext;
     }
+
 
     public TomcatTestServer start() throws LifecycleException {
       if (server != null) {

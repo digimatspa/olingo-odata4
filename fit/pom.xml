@@ -39,6 +39,7 @@
     <project-web-app-dir>${project.build.directory}/${project.build.finalName}</project-web-app-dir>
     <tomcat-base-dir>${project.build.directory}/emb-tom-fit</tomcat-base-dir>
     <project-resource-dir>${project.build.outputDirectory}</project-resource-dir>
+	<javax.activation.version>1.1</javax.activation.version>
   </properties>
 
   <profiles>
@@ -81,21 +82,30 @@
     </dependency>
 
     <!-- REST services CXF -->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.geronimo.javamail</groupId>-->
+<!--      <artifactId>geronimo-javamail_1.6_mail</artifactId>-->
+<!--	  <version>1.0.1</version>-->
+<!--    </dependency>-->
     <dependency>
-      <groupId>org.apache.geronimo.javamail</groupId>
-      <artifactId>geronimo-javamail_1.6_mail</artifactId>
+      <groupId>org.eclipse.angus</groupId>
+      <artifactId>jakarta.mail</artifactId>
+      <version>2.0.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+<!--	  <version>4.2.4</version>-->
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-rs-client</artifactId>
+<!--	  <version>4.2.4</version>-->
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-rs-security-oauth2</artifactId>
+<!--	  <version>4.2.4</version>-->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -123,12 +133,7 @@
       <version>${jakarta.ws.version}</version>
     </dependency>
 
-    <!-- JAVAX -->
-    <dependency>
-      <groupId>javax.activation</groupId>
-      <artifactId>activation</artifactId>
-      <version>${javax.activation.version}</version>
-    </dependency>
+
 
     <!-- SPRING -->
     <dependency>
@@ -149,6 +154,7 @@
     <dependency>
       <groupId>org.esigate</groupId>
       <artifactId>esigate-core</artifactId>
+	  <version>4.4</version>
     </dependency>
 
     <dependency>
@@ -207,7 +213,7 @@
 	 <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>1.3.1</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
@@ -250,7 +256,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.8</version>
+        <version>3.11.0</version>
         <executions>
           <execution>
             <id>unpack-dependencies</id>
@@ -300,7 +306,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>3.6.4</version>
         <executions>
           <execution>
             <phase>pre-integration-test</phase>

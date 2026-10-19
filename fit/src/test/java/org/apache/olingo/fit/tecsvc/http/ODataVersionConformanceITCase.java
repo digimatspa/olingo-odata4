@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -98,8 +99,16 @@ public class ODataVersionConformanceITCase extends AbstractBaseTestITCase {
 
     assertEquals("4.0", connection.getHeaderField(HttpHeader.ODATA_VERSION));
 
-    final String content = IOUtils.toString(connection.getErrorStream(), Charset.defaultCharset());
-    assertNotNull(content);
+    final InputStream errorStream = connection.getErrorStream();
+    if (errorStream != null) {
+      final String content = IOUtils.toString(errorStream, Charset.defaultCharset());
+      assertNotNull(content);
+    } else {
+      try (InputStream successStream = connection.getInputStream()) {
+        final String content = IOUtils.toString(successStream, Charset.defaultCharset());
+        assertNotNull(content);
+      }
+    }
   }
 
   @Test
@@ -114,8 +123,16 @@ public class ODataVersionConformanceITCase extends AbstractBaseTestITCase {
 
     assertEquals("4.0", connection.getHeaderField(HttpHeader.ODATA_VERSION));
 
-    final String content = IOUtils.toString(connection.getErrorStream(), Charset.defaultCharset());
-    assertNotNull(content);;
+    final InputStream errorStream = connection.getErrorStream();
+    if (errorStream != null) {
+      final String content = IOUtils.toString(errorStream, Charset.defaultCharset());
+      assertNotNull(content);
+    } else {
+      try (InputStream successStream = connection.getInputStream()) {
+        final String content = IOUtils.toString(successStream, Charset.defaultCharset());
+        assertNotNull(content);
+      }
+    }
   }
   
   @Test

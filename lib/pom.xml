@@ -54,6 +54,21 @@
 
   <build>
     <plugins>
+    <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-surefire-plugin</artifactId>
+	    <configuration>
+	        <redirectTestOutputToFile>true</redirectTestOutputToFile>
+	        <runOrder>alphabetical</runOrder>
+	        <argLine>
+	            -Dfile.encoding=${project.build.sourceEncoding}
+	            -XX:+EnableDynamicAgentLoading
+	            --add-opens=java.base/java.lang=ALL-UNNAMED
+	            --add-opens=java.base/java.util=ALL-UNNAMED
+	            -Dnet.bytebuddy.experimental=true
+	        </argLine>
+	    </configuration>
+	</plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>

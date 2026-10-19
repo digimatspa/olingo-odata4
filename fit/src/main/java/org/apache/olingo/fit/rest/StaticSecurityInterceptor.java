@@ -19,6 +19,7 @@
 package org.apache.olingo.fit.rest;
 
 import java.security.Principal;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -32,7 +33,6 @@ import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.security.SecurityContext;
-import org.apache.geronimo.mail.util.Base64;
 
 public class StaticSecurityInterceptor extends AbstractPhaseInterceptor<Message> {
 
@@ -57,7 +57,7 @@ public class StaticSecurityInterceptor extends AbstractPhaseInterceptor<Message>
       }
 
       final String encodedUserPassword = auth.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
-      final String usernameAndPassword = new String(Base64.decode(encodedUserPassword));
+      final String usernameAndPassword = new String(Base64.getDecoder().decode(encodedUserPassword));
 
       // Split username and password tokens
       final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");

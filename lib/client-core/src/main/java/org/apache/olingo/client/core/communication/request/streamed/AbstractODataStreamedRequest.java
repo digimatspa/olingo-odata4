@@ -18,13 +18,6 @@
  */
 package org.apache.olingo.client.core.communication.request.streamed;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.nio.charset.Charset;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
@@ -33,7 +26,6 @@ import org.apache.olingo.client.api.ODataBatchConstants;
 import org.apache.olingo.client.api.ODataClient;
 import org.apache.olingo.client.api.communication.request.ODataPayloadManager;
 import org.apache.olingo.client.api.communication.request.ODataStreamedRequest;
-import org.apache.olingo.client.api.communication.request.ODataStreamer;
 import org.apache.olingo.client.api.communication.request.batch.ODataBatchRequest;
 import org.apache.olingo.client.api.communication.response.ODataResponse;
 import org.apache.olingo.client.core.communication.request.AbstractODataRequest;
@@ -41,6 +33,13 @@ import org.apache.olingo.client.core.communication.request.Wrapper;
 import org.apache.olingo.client.core.uri.URIUtils;
 import org.apache.olingo.commons.api.format.ContentType;
 import org.apache.olingo.commons.api.http.HttpMethod;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
  * Streamed OData request abstract class.
